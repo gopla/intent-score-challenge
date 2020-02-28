@@ -13,15 +13,21 @@ import android.widget.Toast;
 public class ScorerActivity extends AppCompatActivity {
     private EditText playerName;
     private boolean isHome;
+    private int homeScoreVal, awayScoreVal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scorer);
 
-        playerName = findViewById(R.id.editText);
         Bundle bundle = getIntent().getExtras();
+        playerName = findViewById(R.id.editText);
         isHome = bundle.getBoolean("isHome");
+        if (isHome){
+            homeScoreVal = bundle.getInt("homeScore");
+        }else{
+            awayScoreVal = bundle.getInt("awayScore");
+        }
     }
 
     public void handlePlayerName(View view) {
@@ -29,10 +35,14 @@ public class ScorerActivity extends AppCompatActivity {
         if(!name.isEmpty()){
             Intent i = new Intent();
             if (isHome){
+                homeScoreVal++;
                 i.putExtra("homeScorer", name);
+                i.putExtra("homeScore", homeScoreVal);
                 setResult(1, i);
             }else{
+                awayScoreVal++;
                 i.putExtra("awayScorer", name);
+                i.putExtra("awayScore", awayScoreVal);
                 setResult(2, i);
             }
             finish();

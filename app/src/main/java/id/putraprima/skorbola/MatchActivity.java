@@ -74,9 +74,13 @@ public class MatchActivity extends AppCompatActivity {
         }
 
         if (requestCode == 1){
-            homeScorer = data.getStringExtra("homeScorer") + ", " + homeScorer;
+            homeScorer = data.getStringExtra("homeScorer") + "\n " + homeScorer;
+            homeScoreVal = data.getIntExtra("homeScore", 0);
+            homeScore.setText(String.valueOf(homeScoreVal));
         }else if(requestCode == 2){
-            awayScorer = data.getStringExtra("awayScorer") + ", " + awayScorer;
+            awayScorer = data.getStringExtra("awayScorer") + "\n " + awayScorer;
+            awayScoreval =  data.getIntExtra("awayScore", 0);
+            awayScore.setText(String.valueOf(awayScoreval));
         }
     }
 
@@ -84,33 +88,31 @@ public class MatchActivity extends AppCompatActivity {
         isHome = true;
         Intent i = new Intent(MatchActivity.this, ScorerActivity.class);
         i.putExtra("isHome", isHome);
+        i.putExtra("homeScore", homeScoreVal);
         startActivityForResult(i, 1);
-        homeScoreVal++;
-        homeScore.setText(String.valueOf(homeScoreVal));
     }
 
     public void handleAwayScore(View view) {
         isHome = false;
         Intent i = new Intent(MatchActivity.this, ScorerActivity.class);
         i.putExtra("isHome", isHome);
+        i.putExtra("awayScore", awayScoreval);
         startActivityForResult(i, 2);
-        awayScoreval++;
-        awayScore.setText(String.valueOf(awayScoreval));
     }
 
     public void handleResult(View view) {
         String winner = "", score = "", scorerName = "";
         if (homeScoreVal > awayScoreval){
-            winner = homeTeam.getText().toString() + " Win";
-            score = homeScoreVal + " - " + awayScoreval;
-            scorerName = homeScorer;
+            winner = "The winner is " + homeTeam.getText().toString();
+            score = "Score \n" + homeScoreVal + " - " + awayScoreval;
+            scorerName = "Scorer : \n" + homeScorer;
         }else if (homeScoreVal < awayScoreval){
-            winner = awayTeam.getText().toString() + " Win";
-            score = homeScoreVal + " - " + awayScoreval;
-            scorerName = awayScorer;
+            winner = "The winner is " + awayTeam.getText().toString();
+            score = "Score \n" + homeScoreVal + " - " + awayScoreval;
+            scorerName = "Scorer : \n" + awayScorer;
         }else{
             winner = "Draw";
-            score = homeScoreVal + " - " + awayScoreval;
+            score = "Score \n" + homeScoreVal + " - " + awayScoreval;
             scorerName = "";
         }
         Intent i = new Intent(MatchActivity.this, ResultActivity.class);
